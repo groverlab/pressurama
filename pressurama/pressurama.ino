@@ -2,6 +2,9 @@
 // Vout = VCC × (P × 0.00369 + 0.04)
 // P = pressure in kPa
 
+int aiPins[] = {0, 1, 2, 3};
+int pinCount = 4;
+
 void setup() {
   Serial.begin(2000000);
 }
@@ -13,11 +16,15 @@ const float Vcc = 5.0;
 float P = 0;
 
 void loop() {
-  sum = 0;
-  for (int i = 0; i < number_of_measurements; i++) {
-    sum = sum + analogRead(A0);
+  for (int thisPin = 0; thisPin < pinCount; thisPin++) {
+    sum = 0;
+    for (int i = 0; i < number_of_measurements; i++) {
+      sum = sum + analogRead(aiPins[thisPin]);
+    }
+    Vout = 5.0 * (sum/number_of_measurements) / 1024.0;
+    P = ((Vout/Vcc) - 0.04) / 0.00369;
+    Serial.print(P);
+    Serial.print("\t");
   }
-  Vout = 5.0 * (sum/number_of_measurements) / 1024.0;
-  P = ((Vout/Vcc) - 0.04) / 0.00369;
-  Serial.println(P);
+  Serial.println();
 }
