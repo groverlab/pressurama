@@ -2,8 +2,8 @@
 // Vout = VCC × (P × 0.00369 + 0.04)
 // P = pressure in kPa
 
-int aiPins[] = {0, 1, 2, 3};
-int pinCount = 4;
+int aiPins[] = {0};
+int pinCount = 1;
 
 void setup() {
   Serial.begin(2000000);
