@@ -3,7 +3,7 @@
 // P = pressure in kPa
 
 int aiPins[] = {0};
-int pinCount = 1;
+int pinCount = 8;
 
 void setup() {
   Serial.begin(2000000);
