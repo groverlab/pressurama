@@ -16,7 +16,7 @@ readtime = (now.strftime("%H:%M:%S") )
 
 name = "masterfile" #name the file here
 tracker = 0
-sample_size = 10    #this number designates data points in the save data
+sample_size = 2880    #this number designates data points in the save data (time/1.25)
 
 class SensorData(object):
     def __init__(self):
