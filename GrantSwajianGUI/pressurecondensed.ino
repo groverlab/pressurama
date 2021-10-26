@@ -25,5 +25,5 @@ void loop() {
     }
     Serial.println(vals[thisPin]);
   }
-  delay(1100)
+  delay(1250);
 }
