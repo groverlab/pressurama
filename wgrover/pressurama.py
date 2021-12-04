@@ -16,10 +16,10 @@ data = []
 ser = serial.Serial(port, 2000000)
 ser.flush()
 while True:
-    print(ser.inWaiting(), datetime.datetime.now().isoformat(), end="\t")
-    outfile.write(datetime.datetime.now().isoformat())
     s = ser.readline().decode("utf-8")
     if s.startswith("X"):
+        print(ser.inWaiting(), datetime.datetime.now().isoformat(), end="\t")
+        outfile.write(datetime.datetime.now().isoformat())
         tokens = s.split(" ")
         for token in tokens:
             if ":" in token:
@@ -29,3 +29,5 @@ while True:
                 outfile.write("," + str(measurement))
         print()
         outfile.write("\n")
+        outfile.flush()
+        os.fsync(outfile)
