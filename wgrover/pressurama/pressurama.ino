@@ -2,7 +2,7 @@ void setup() {
   Serial.begin(2000000);
 }
 
-int averages = 100;
+int averages = 10;
 
 void loop() {
   float sums[] = {0,0,0,0,0,0,0,0};
@@ -11,9 +11,12 @@ void loop() {
       sums[pin] += analogRead(pin);
     }
   }
+  Serial.print("X ");
   for(int pin = 0; pin < 8; pin++) {
     Serial.print(pin);
-    Serial.print("\t");
-    Serial.println(sums[pin] / averages);
+    Serial.print(":");
+    Serial.print(sums[pin] / averages);
+    Serial.print(" ");
   }
+  Serial.print("Y\n");
 }

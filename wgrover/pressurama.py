@@ -15,8 +15,17 @@ data = []
 ser = serial.Serial(port, 2000000)
 ser.flush()
 while True:
+    print(ser.inWaiting(), datetime.datetime.now().isoformat(), end="\t")
     s = ser.readline().decode("utf-8")
-    channel = int(s.split("\t")[0])
-    measurement = float(s.split("\t")[1])
-    print(datetime.datetime.now().isoformat(), channel, ":", measurement, "\t", ser.inWaiting())
+    if s.startswith("X"):
+        tokens = s.split(" ")
+        for token in tokens:
+            if ":" in token:
+                channel = int(token.split(":")[0])
+                measurement = float(token.split(":")[1])
+                print("%0.1f\t" % (measurement), end="")
+        print()
+        # channel = int(s.split("\t")[0])
+        # measurement = float(s.split("\t")[1])
+        # print(datetime.datetime.now().isoformat(), channel, ":", measurement, "\t", ser.inWaiting())
     
