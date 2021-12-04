@@ -29,5 +29,5 @@ while True:
                 outfile.write("," + str(measurement))
         print()
         outfile.write("\n")
-        outfile.flush()
-        os.fsync(outfile)
+        # outfile.flush()
+        # os.fsync(outfile)
