@@ -1,4 +1,5 @@
 import serial, os, sys, datetime
+outfile = open("out.csv", "a")
 port = ""
 usb_count = 0
 devices = os.listdir("/dev")
@@ -16,6 +17,7 @@ ser = serial.Serial(port, 2000000)
 ser.flush()
 while True:
     print(ser.inWaiting(), datetime.datetime.now().isoformat(), end="\t")
+    outfile.write(datetime.datetime.now().isoformat())
     s = ser.readline().decode("utf-8")
     if s.startswith("X"):
         tokens = s.split(" ")
@@ -24,8 +26,6 @@ while True:
                 channel = int(token.split(":")[0])
                 measurement = float(token.split(":")[1])
                 print("%0.1f\t" % (measurement), end="")
+                outfile.write("," + str(measurement))
         print()
-        # channel = int(s.split("\t")[0])
-        # measurement = float(s.split("\t")[1])
-        # print(datetime.datetime.now().isoformat(), channel, ":", measurement, "\t", ser.inWaiting())
-    
+        outfile.write("\n")
