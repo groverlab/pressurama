@@ -2,7 +2,7 @@ void setup() {
   Serial.begin(2000000);
 }
 
-int averages = 10000;
+int averages = 100;
 
 void loop() {
   float sums[] = {0,0,0,0,0,0,0,0};
