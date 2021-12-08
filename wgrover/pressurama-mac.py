@@ -17,7 +17,9 @@ ser = serial.Serial(port, 2000000)
 ser.flush()
 while True:
     s = ser.readline().decode("utf-8")
-    if s.startswith("X") and s.strip().endswith("Y") and s.count("X") == 1 and s.count("Y") == 1:
+    if s.startswith("X") and s.strip().endswith("Y") and \
+    s.count("X") == 1 and s.count("Y") == 1 and \
+    s.count(" ") == 9 and s.count(":") == 8:
         print(ser.inWaiting(), datetime.datetime.now().isoformat(), end="\t")
         outfile.write(datetime.datetime.now().isoformat())
         tokens = s.split(" ")
