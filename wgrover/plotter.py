@@ -1,6 +1,13 @@
 import matplotlib.pyplot as plt
+import sys
 from datetime import datetime
-infile = open("out.csv", "r")
+
+with open(sys.argv[1], 'r') as fp:
+    for count, line in enumerate(fp):
+        pass
+print('Total Lines', count + 1)
+
+infile = open(sys.argv[1], "r")
 num_channels = 8
 times = []
 channels = [[] for _ in range(num_channels)]
@@ -9,8 +16,11 @@ for line in infile:
     times.append(datetime.fromisoformat(tokens[0]))
     for i in range(num_channels):
         channels[i].append(float(tokens[i+1]))
+
+exit()
+
 for i in range(num_channels):
     plt.plot(times, channels[i], label=i)
 plt.legend()
-plt.show()
+plt.savefig("out.png")
 
