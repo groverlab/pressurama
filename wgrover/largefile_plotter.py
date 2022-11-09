@@ -2,18 +2,21 @@ import matplotlib.pyplot as plt
 import sys
 from datetime import datetime
 
-with open(sys.argv[1], 'r') as fp:
-    for count, line in enumerate(fp):
-        pass
-print('Total Lines', count + 1)
-lines = count
-begin = 1000
-end = 2000  # was lines
+# LINE COUNTER:
+# with open(sys.argv[1], 'r') as fp:
+#     for count, line in enumerate(fp):
+#         pass
+# print('Total Lines', count + 1)
+# lines = count
+
+begin = 0
+end = 100000  # was lines
 points = end - begin
 
 infile = open(sys.argv[1], "r")
 # kept_channels = [0,1,2,3,4,5,6,7]
 kept_channels = [1,2,3,6,7]
+kept_channels = [7,1,3,6,2]
 # kept_channels = [1]
 
 times = [0] * points
@@ -29,9 +32,14 @@ for i, line in enumerate(infile):
             if j in kept_channels:
                 channels[kept_channels.index(j)][i-begin] = float(tokens[j+1])
 
+plt.figure(figsize=(10, 2))
 for i, name in enumerate(kept_channels):
     print("plotting ", name)
     plt.plot(times, channels[i], label=name)
-plt.legend()
-plt.savefig("out.png")
+plt.ylim(bottom=0)
+plt.xlabel("Time (s)")
+plt.ylabel("Vacuum (kPa)")
+plt.tight_layout()
+# plt.legend()
+plt.savefig("out.pdf")
 
