@@ -1,8 +1,15 @@
 import matplotlib.pyplot as plt
+import matplotlib.patches as mpatches
 import sys
 from datetime import datetime
 
-def plot(filename, begin, end, units="seconds", outfile="out.pdf"):
+filename = ""
+kept_channels = [0,1,2,3,4,5,6,7]
+last_left = False
+last_right = False
+
+def plot(begin, end,  units="seconds", outfile="out.pdf"):
+    global last_left, last_right
     timing = "global"  # "local" or "global"
     points = end - begin
     tmult = 1  # default units are seconds
@@ -12,11 +19,7 @@ def plot(filename, begin, end, units="seconds", outfile="out.pdf"):
         tmult = 60*60  # 60 minutes per hour
     if units == "days":
         tmult = 60*60*24  # 24 hours per day
-
     infile = open(filename, "r")
-    # kept_channels = [0,1,2,3,4,5,6,7]
-    kept_channels = [7,1,3,6,2]
-
     times = [0] * points
     channels = [[0]*points for _ in range(len(kept_channels))]
 
@@ -39,8 +42,20 @@ def plot(filename, begin, end, units="seconds", outfile="out.pdf"):
 
     plt.figure(figsize=(15, 2))
     for i, name in enumerate(kept_channels):
-        print("plotting ", name)
+        print("  plotting ", name)
         plt.plot(times, channels[i], label=name)
+    print("TMULT IS", tmult)
+    print("LAST LEFT IS", last_left)
+    print("LAST RIGHT IS", last_right)
+    if last_left and last_right:
+        print("  rectangle: ", last_left/tmult, 0, (last_right-last_left)/tmult, 200)
+        rect=mpatches.Rectangle((last_left/tmult, 0),(last_right-last_left)/tmult, 200,
+                                fill=False, color="purple", linewidth=2)
+        plt.gca().add_patch(rect)
+    else:
+        print("  remember: ", left * tmult, "s,", right * tmult, "s")
+        last_left = left * tmult
+        last_right = right * tmult
     if units == "seconds":
         plt.xlabel("Time (seconds)")
     if units == "minutes":
@@ -55,4 +70,6 @@ def plot(filename, begin, end, units="seconds", outfile="out.pdf"):
     plt.tight_layout()
     # plt.legend()
     plt.savefig(outfile)
+    last_left = left * tmult
+    last_right = right * tmult
 
