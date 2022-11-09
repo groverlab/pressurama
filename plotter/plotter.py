@@ -16,7 +16,6 @@ def plot(filename, begin, end, units="seconds", outfile="out.pdf"):
     infile = open(filename, "r")
     # kept_channels = [0,1,2,3,4,5,6,7]
     kept_channels = [7,1,3,6,2]
-    # kept_channels = [1]
 
     times = [0] * points
     channels = [[0]*points for _ in range(len(kept_channels))]
