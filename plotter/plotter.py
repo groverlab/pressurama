@@ -23,6 +23,7 @@ def plot(begin, end,  units="seconds", outfile="out.pdf"):
     times = [0] * points
     channels = [[0]*points for _ in range(len(kept_channels))]
 
+    print(filename, "->", outfile)
     for i, line in enumerate(infile):
         if i == 0 and timing == "global":
             tokens = line.split(",")
@@ -44,16 +45,11 @@ def plot(begin, end,  units="seconds", outfile="out.pdf"):
     for i, name in enumerate(kept_channels):
         print("  plotting ", name)
         plt.plot(times, channels[i], label=name)
-    print("TMULT IS", tmult)
-    print("LAST LEFT IS", last_left)
-    print("LAST RIGHT IS", last_right)
     if last_left and last_right:
-        print("  rectangle: ", last_left/tmult, 0, (last_right-last_left)/tmult, 200)
         rect=mpatches.Rectangle((last_left/tmult, 0),(last_right-last_left)/tmult, 200,
-                                fill=False, color="purple", linewidth=2)
+                                fill=False, color="black", linewidth=3, zorder=4, clip_on=False)
         plt.gca().add_patch(rect)
     else:
-        print("  remember: ", left * tmult, "s,", right * tmult, "s")
         last_left = left * tmult
         last_right = right * tmult
     if units == "seconds":
