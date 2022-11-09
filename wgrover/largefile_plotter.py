@@ -8,7 +8,7 @@ with open(sys.argv[1], 'r') as fp:
 print('Total Lines', count + 1)
 lines = count
 begin = 1000
-end = 1100  # was lines
+end = 2000  # was lines
 points = end - begin
 
 infile = open(sys.argv[1], "r")
@@ -19,7 +19,9 @@ channels = [[0]*points for _ in range(num_channels)]
 for i, line in enumerate(infile):
     if begin <= i < end:
         tokens = line.split(",")
-        times[i-begin] = datetime.fromisoformat(tokens[0])
+        if i == begin:
+            start_time = datetime.fromisoformat(tokens[0])
+        times[i-begin] = (datetime.fromisoformat(tokens[0]) - start_time).total_seconds()
         for j in range(num_channels):
             channels[j][i-begin] = float(tokens[j+1])
 
