@@ -5,12 +5,10 @@ from datetime import datetime
 
 filename = ""
 kept_channels = [0,1,2,3,4,5,6,7]
-last_left = False
-last_right = False
 
-def plot(begin, end,  units="seconds", outfile="out.pdf"):
-    global last_left, last_right
+def plot(roi, box = None, units="seconds", outfile="out.pdf"):
     timing = "global"  # "local" or "global"
+    begin, end = roi
     points = end - begin
     tmult = 1  # default units are seconds
     if units == "minutes":
@@ -37,6 +35,13 @@ def plot(begin, end,  units="seconds", outfile="out.pdf"):
                 left = ((datetime.fromisoformat(tokens[0]) - start_time).total_seconds()) / tmult
             if i == end - 1:
                 right = ((datetime.fromisoformat(tokens[0]) - start_time).total_seconds()) / tmult
+            if box:
+                if i == box[0]:
+                    print("box start", i)
+                    box_start_time = ((datetime.fromisoformat(tokens[0]) - start_time).total_seconds()) / tmult
+                if i == box[1]:
+                    print("box end", i)
+                    box_end_time = ((datetime.fromisoformat(tokens[0]) - start_time).total_seconds()) / tmult
             for j in range(8):
                 if j in kept_channels:
                     channels[kept_channels.index(j)][i-begin] = float(tokens[j+1])
@@ -45,13 +50,13 @@ def plot(begin, end,  units="seconds", outfile="out.pdf"):
     for i, name in enumerate(kept_channels):
         print("  plotting ", name)
         plt.plot(times, channels[i], label=name)
-    if last_left and last_right:
-        rect=mpatches.Rectangle((last_left/tmult, 0),(last_right-last_left)/tmult, 200,
+
+    if box:
+        print("  rectangle at", box_start_time, 0, box_end_time-box_start_time, 200)
+        rect=mpatches.Rectangle((box_start_time, 0), box_end_time-box_start_time, 200,
                                 fill=False, color="black", linewidth=3, zorder=4, clip_on=False)
         plt.gca().add_patch(rect)
-    else:
-        last_left = left * tmult
-        last_right = right * tmult
+
     if units == "seconds":
         plt.xlabel("Time (seconds)")
     if units == "minutes":
@@ -66,6 +71,4 @@ def plot(begin, end,  units="seconds", outfile="out.pdf"):
     plt.tight_layout()
     # plt.legend()
     plt.savefig(outfile)
-    last_left = left * tmult
-    last_right = right * tmult
 
