@@ -30,6 +30,10 @@ def plot(filename, begin, end, units="seconds", outfile="out.pdf"):
             if i == begin and timing == "local":
                 start_time = datetime.fromisoformat(tokens[0])
             times[i-begin] = ((datetime.fromisoformat(tokens[0]) - start_time).total_seconds()) / tmult
+            if i == begin:
+                left = ((datetime.fromisoformat(tokens[0]) - start_time).total_seconds()) / tmult
+            if i == end - 1:
+                right = ((datetime.fromisoformat(tokens[0]) - start_time).total_seconds()) / tmult
             for j in range(8):
                 if j in kept_channels:
                     channels[kept_channels.index(j)][i-begin] = float(tokens[j+1])
@@ -47,6 +51,7 @@ def plot(filename, begin, end, units="seconds", outfile="out.pdf"):
     if units == "days":
         plt.xlabel("Time (days)")
     plt.ylabel("Vacuum (kPa)")
+    plt.xlim(left=left, right=right)
     plt.ylim(bottom=0, top=200)
     plt.tight_layout()
     # plt.legend()
