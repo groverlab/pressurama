@@ -12,9 +12,12 @@ end = 2000  # was lines
 points = end - begin
 
 infile = open(sys.argv[1], "r")
-num_channels = 8  # was 8
+# kept_channels = [0,1,2,3,4,5,6,7]
+kept_channels = [1,2,3,6,7]
+# kept_channels = [1]
+
 times = [0] * points
-channels = [[0]*points for _ in range(num_channels)]
+channels = [[0]*points for _ in range(len(kept_channels))]
 
 for i, line in enumerate(infile):
     if begin <= i < end:
@@ -22,12 +25,13 @@ for i, line in enumerate(infile):
         if i == begin:
             start_time = datetime.fromisoformat(tokens[0])
         times[i-begin] = (datetime.fromisoformat(tokens[0]) - start_time).total_seconds()
-        for j in range(num_channels):
-            channels[j][i-begin] = float(tokens[j+1])
+        for j in range(8):
+            if j in kept_channels:
+                channels[kept_channels.index(j)][i-begin] = float(tokens[j+1])
 
-for i in range(num_channels):
-    print("plotting ", i)
-    plt.plot(times, channels[i], label=i)
+for i, name in enumerate(kept_channels):
+    print("plotting ", name)
+    plt.plot(times, channels[i], label=name)
 plt.legend()
 plt.savefig("out.png")
 
