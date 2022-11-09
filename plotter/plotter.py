@@ -3,6 +3,7 @@ import sys
 from datetime import datetime
 
 def plot(filename, begin, end, units="seconds", outfile="out.pdf"):
+    timing = "global"  # "local" or "global"
     points = end - begin
     tmult = 1  # default units are seconds
     if units == "minutes":
@@ -21,9 +22,12 @@ def plot(filename, begin, end, units="seconds", outfile="out.pdf"):
     channels = [[0]*points for _ in range(len(kept_channels))]
 
     for i, line in enumerate(infile):
+        if i == 0 and timing == "global":
+            tokens = line.split(",")
+            start_time = datetime.fromisoformat(tokens[0])
         if begin <= i < end:
             tokens = line.split(",")
-            if i == begin:
+            if i == begin and timing == "local":
                 start_time = datetime.fromisoformat(tokens[0])
             times[i-begin] = ((datetime.fromisoformat(tokens[0]) - start_time).total_seconds()) / tmult
             for j in range(8):
