@@ -10,7 +10,7 @@ def plot(filename, begin, end, units="seconds", outfile="out.pdf"):
     if units == "hours":
         tmult = 60*60  # 60 minutes per hour
     if units == "days":
-        tmult = 60*60*24  # 42 hours per day
+        tmult = 60*60*24  # 24 hours per day
 
     infile = open(filename, "r")
     # kept_channels = [0,1,2,3,4,5,6,7]
