@@ -5,9 +5,9 @@ from datetime import datetime
 
 filename = ""
 kept_channels = [0,1,2,3,4,5,6,7]
+timing = "global"  # "local" or "global"
 
 def plot(roi, box = None, units="seconds", outfile="out.pdf"):
-    timing = "global"  # "local" or "global"
     begin, end = roi
     points = end - begin
     tmult = 1  # default units are seconds
