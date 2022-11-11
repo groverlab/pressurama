@@ -3,10 +3,13 @@ import matplotlib.patches as mpatches
 import sys
 from datetime import datetime
 
-
 filename = ""
 kept_channels = [0,1,2,3,4,5,6,7]
 timing = "global"  # "local" or "global"
+figsize = (12, 1.5)  # thin; using (12, 5) for tall
+
+plt.rcParams["font.family"] = "Helvetica"
+plt.rcParams["font.size"] = "12"
 
 def plot(roi, box = None, units="seconds", outfile="out.pdf"):
     begin, end = roi
@@ -47,7 +50,8 @@ def plot(roi, box = None, units="seconds", outfile="out.pdf"):
                 if j in kept_channels:
                     channels[kept_channels.index(j)][i-begin] = float(tokens[j+1])
 
-    plt.figure(figsize=(15, 2))
+
+    plt.figure(figsize=figsize, dpi=300)
     for i, name in enumerate(kept_channels):
         print("  plotting ", name)
         plt.plot(times, channels[i], label=name)
@@ -58,15 +62,15 @@ def plot(roi, box = None, units="seconds", outfile="out.pdf"):
                                 fill=False, color="black", linewidth=3, zorder=4, clip_on=False)
         plt.gca().add_patch(rect)
 
-    if units == "seconds":
-        plt.xlabel("Time (seconds)")
-    if units == "minutes":
-        plt.xlabel("Time (minutes)")
-    if units == "hours":
-        plt.xlabel("Time (hours)")
-    if units == "days":
-        plt.xlabel("Time (days)")
-    plt.ylabel("Vacuum (kPa)")
+    # if units == "seconds":
+    #     plt.xlabel("Time (seconds)")
+    # if units == "minutes":
+    #     plt.xlabel("Time (minutes)")
+    # if units == "hours":
+    #     plt.xlabel("Time (hours)")
+    # if units == "days":
+    #     plt.xlabel("Time (days)")
+    plt.ylabel("Vac. (kPa)")
     plt.xlim(left=left, right=right)
     plt.ylim(bottom=0, top=200)
     plt.tight_layout()
