@@ -3,6 +3,7 @@ import matplotlib.patches as mpatches
 import sys
 from datetime import datetime
 
+
 filename = ""
 kept_channels = [0,1,2,3,4,5,6,7]
 timing = "global"  # "local" or "global"
