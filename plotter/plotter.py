@@ -1,7 +1,7 @@
-import matplotlib.pyplot as plt
-import matplotlib.patches as mpatches
-import sys
 from datetime import datetime
+
+import matplotlib.patches as mpatches
+import matplotlib.pyplot as plt
 
 filename = ""
 kept_channels = [0,1,2,3,4,5,6,7]
