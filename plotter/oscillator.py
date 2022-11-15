@@ -1,5 +1,7 @@
 import plotter
-plotter.filename = "oscillator.csv"
+import sys
+
+plotter.filename = sys.argv[1]
 plotter.kept_channels = [7,1,3,6,2]
 plotter.timing = "local"
 
