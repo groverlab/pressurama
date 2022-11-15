@@ -71,17 +71,26 @@ def plot(roi, box = None, units="seconds", outfile="out.pdf"):
                                 fill=False, color="black", linewidth=3, zorder=4, clip_on=False)
         plt.gca().add_patch(rect)
 
-    # if units == "seconds":
-    #     plt.xlabel("Time (seconds)")
-    # if units == "minutes":
-    #     plt.xlabel("Time (minutes)")
-    # if units == "hours":
-    #     plt.xlabel("Time (hours)")
-    # if units == "days":
-    #     plt.xlabel("Time (days)")
+
     plt.ylabel("Vac. (kPa)")
+    if units == "seconds1":
+        plt.xticks([0,5,10,15])
+        # plt.xlabel("Time (seconds)")
+    if units == "seconds2":
+        plt.xticks([0,0.5,1.0,1.5])
+        plt.ylabel("Vacuum (kPa)")
+    if units == "minutes":
+        plt.locator_params(axis="x", nbins=4)
+        # plt.xlabel("Time (minutes)")
+    if units == "hours":
+        pass
+        # plt.xlabel("Time (hours)")
+    if units == "days":
+        plt.xticks([0,1,2])
+        # plt.xlabel("Time (days)")
+    
     plt.xlim(left=left, right=right)
-    # plt.ylim(bottom=0, top=200)
+    plt.ylim(bottom=0, top=40)
     plt.tight_layout()
     # plt.legend()
     plt.savefig(outfile)
