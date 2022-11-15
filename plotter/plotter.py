@@ -11,6 +11,15 @@ figsize = (12, 1.5)  # thin; using (12, 5) for tall
 plt.rcParams["font.family"] = "Helvetica"
 plt.rcParams["font.size"] = "12"
 
+#  From the datasheet:  https://www.nxp.com/docs/en/data-sheet/MPX4250D.pdf
+#  Vout = VCC × (P × 0.00369 + 0.04)
+#  P = pressure in kPa
+#  VCC = 5
+#  Vout = (V / 1023) × 5     (V is the actual measured value sent from Arduino, between 0 and 1023)
+#  P = (V - 40.92) / 3.77487
+def P(V):  # pressure in kPa from Vout in arb. units from 0 to 1023
+    return (V - 40.92) / 3.77487
+
 def plot(roi, box = None, units="seconds", outfile="out.pdf"):
     begin, end = roi
     points = end - begin
@@ -48,7 +57,7 @@ def plot(roi, box = None, units="seconds", outfile="out.pdf"):
                     box_end_time = ((datetime.fromisoformat(tokens[0]) - start_time).total_seconds()) / tmult
             for j in range(8):
                 if j in kept_channels:
-                    channels[kept_channels.index(j)][i-begin] = float(tokens[j+1])
+                    channels[kept_channels.index(j)][i-begin] = P(float(tokens[j+1]))
 
 
     plt.figure(figsize=figsize, dpi=300)
@@ -57,8 +66,8 @@ def plot(roi, box = None, units="seconds", outfile="out.pdf"):
         plt.plot(times, channels[i], label=name)
 
     if box:
-        print("  rectangle at", box_start_time, 0, box_end_time-box_start_time, 200)
-        rect=mpatches.Rectangle((box_start_time, 0), box_end_time-box_start_time, 200,
+        print("  rectangle at", box_start_time, 0, box_end_time-box_start_time, 40)
+        rect=mpatches.Rectangle((box_start_time, 0), box_end_time-box_start_time, 40,
                                 fill=False, color="black", linewidth=3, zorder=4, clip_on=False)
         plt.gca().add_patch(rect)
 
@@ -72,7 +81,7 @@ def plot(roi, box = None, units="seconds", outfile="out.pdf"):
     #     plt.xlabel("Time (days)")
     plt.ylabel("Vac. (kPa)")
     plt.xlim(left=left, right=right)
-    plt.ylim(bottom=0, top=200)
+    # plt.ylim(bottom=0, top=200)
     plt.tight_layout()
     # plt.legend()
     plt.savefig(outfile)
