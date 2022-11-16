@@ -1,5 +1,8 @@
 from datetime import datetime
 
+import matplotlib as mpl
+mpl.rcParams['agg.path.chunksize'] = 10000
+
 import matplotlib.patches as mpatches
 import matplotlib.pyplot as plt
 
@@ -60,7 +63,7 @@ def plot(roi, box = None, units="seconds", outfile="out.pdf"):
                     channels[kept_channels.index(j)][i-begin] = P(float(tokens[j+1]))
 
 
-    plt.figure(figsize=figsize, dpi=300)
+    plt.figure(figsize=figsize, dpi=1200)
     for i, name in enumerate(kept_channels):
         print("  plotting ", name)
         plt.plot(times, channels[i], label=name)
@@ -68,7 +71,7 @@ def plot(roi, box = None, units="seconds", outfile="out.pdf"):
     if box:
         print("  rectangle at", box_start_time, 0, box_end_time-box_start_time, 40)
         rect=mpatches.Rectangle((box_start_time, 0), box_end_time-box_start_time, 40,
-                                fill=False, color="black", linewidth=3, zorder=4, clip_on=False)
+                                fill=False, color="black", linewidth=2, zorder=4, clip_on=False)
         plt.gca().add_patch(rect)
 
 
