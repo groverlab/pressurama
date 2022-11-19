@@ -86,6 +86,7 @@ def plot(roi, box = None, units="seconds", outfile="out.pdf", freq=False):
         print(f"peak count = {peak_count}")
         print(f"elapsed seconds = {right-left}")
         print(f"frequency = {peak_count / (right-left)} Hz")
+        print(f"period = {(right-left) / peak_count} s")
 
     plt.figure(figsize=figsize, dpi=1200)
     for i, name in enumerate(kept_channels):

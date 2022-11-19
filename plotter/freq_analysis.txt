@@ -1,0 +1,24 @@
+first 3 hours >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+oscillator.csv -> freq.png
+freq analysis for roi 0 to 850000
+peak count = 8200
+elapsed seconds = 10946.994964
+frequency = 0.749064015007434 Hz
+period = 1.3349993858536584 s
+  plotting  7
+last 3 hours >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+oscillator.csv -> freq.png
+freq analysis for roi 13857395 to 14707395
+peak count = 8534
+elapsed seconds = 10950.708708
+frequency = 0.7793102919234367 Hz
+period = 1.2831859278181392 s
+  plotting  7
+whole file >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+oscillator.csv -> freq.png
+freq analysis for roi 0 to 14707395
+peak count = 148389
+elapsed seconds = 189477.35043
+frequency = 0.7831490131313633 Hz
+period = 1.276896201403069 s
+  plotting  7
