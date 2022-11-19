@@ -1,0 +1,6 @@
+oscillator.csv -> freq.png
+freq analysis for roi 0 to 14707395
+peak count = 148389
+elapsed seconds = 189477.35043
+frequency = 0.7831490131313633 Hz
+  plotting  7

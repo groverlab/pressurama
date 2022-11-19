@@ -11,12 +11,17 @@ plotter.peak_exit = 15.0
 
 lines = 14707395
 
-# roi = [0, 1000000]
+
+# # First and last three hours:
+
+# roi = [0, 850000]
 # plotter.plot(roi, units="seconds", outfile="freq.png", freq=True)
 
-# roi = [lines-1000000, lines]
+# roi = [lines-850000, lines]
 # plotter.plot(roi, units="seconds", outfile="freq.png", freq=True)
+
+
+# whole file:
 
 roi = [0, lines]
 plotter.plot(roi, units="seconds", outfile="freq.png", freq=True)
-
