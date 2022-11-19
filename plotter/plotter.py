@@ -39,6 +39,9 @@ def plot(roi, box = None, units="seconds", outfile="out.pdf", freq=False):
     infile = open(filename, "r")
     times = [0] * points
     channels = [[0]*points for _ in range(len(kept_channels))]
+    peak_times = []
+    peak_durations = []
+    last_peak_time = 0
     in_peak = False
     peak_count = 0
     print(filename, "->", outfile)
@@ -69,13 +72,14 @@ def plot(roi, box = None, units="seconds", outfile="out.pdf", freq=False):
                     if freq:
                         if in_peak:  # in peak, look for exit
                             if pressure < peak_exit:  # exiting peak
-                                print("exiting peak")
+                                peak_count += 1
+                                peak_times.append(times[i-begin])
+                                peak_durations.append(times[i-begin] - last_peak_time)
+                                last_peak_time = times[i-begin]
                                 in_peak = False
                         else:  # not in peak, look for entry
                             if pressure > peak_entry:  # entering peak
-                                print("entering peak")
                                 in_peak = True
-                                peak_count += 1
 
     if freq:
         print(f"freq analysis for roi {begin} to {end}")
@@ -90,7 +94,6 @@ def plot(roi, box = None, units="seconds", outfile="out.pdf", freq=False):
         if freq:
             plt.plot(times, numpy.full(len(times), peak_entry))
             plt.plot(times, numpy.full(len(times), peak_exit))
-
     if box:
         print("  rectangle at", box_start_time, 0, box_end_time-box_start_time, 40)
         rect=mpatches.Rectangle((box_start_time, 0), box_end_time-box_start_time, 40,
@@ -119,4 +122,11 @@ def plot(roi, box = None, units="seconds", outfile="out.pdf", freq=False):
     plt.tight_layout()
     # plt.legend()
     plt.savefig(outfile)
+
+    if freq:
+        dfile = open("durations.csv", "w")
+        for peak_time, peak_duration in zip(peak_times, peak_durations):
+            dfile.write(f"{peak_time},{peak_duration}\n")
+        dfile.close()
+
 

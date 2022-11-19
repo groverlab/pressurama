@@ -12,6 +12,7 @@ filename = "lab_vacuum.csv"
 kept_channels = [3]
 timing = "local"  # "local" or "global"
 figsize = (8, 1.5)  # thin; using (12, 5) for tall
+figsize = (8, 5)  # thin; using (12, 5) for tall
 
 plt.rcParams["font.family"] = "Helvetica"
 plt.rcParams["font.size"] = "12"
