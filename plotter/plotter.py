@@ -78,9 +78,10 @@ def plot(roi, box = None, units="seconds", outfile="out.pdf", freq=False):
                                 peak_count += 1
 
     if freq:
-        print("peak count =", peak_count)
-        print("elapsed seconds =", right-left)
-        print("frequency =", peak_count / (right-left), "Hz")
+        print(f"freq analysis for roi {begin} to {end}")
+        print(f"peak count = {peak_count}")
+        print(f"elapsed seconds = {right-left}")
+        print(f"frequency = {peak_count / (right-left)} Hz")
 
     plt.figure(figsize=figsize, dpi=1200)
     for i, name in enumerate(kept_channels):
