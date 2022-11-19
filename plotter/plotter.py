@@ -5,11 +5,14 @@ mpl.rcParams['agg.path.chunksize'] = 10000
 
 import matplotlib.patches as mpatches
 import matplotlib.pyplot as plt
+import numpy
 
 filename = ""
 kept_channels = [0,1,2,3,4,5,6,7]
 timing = "global"  # "local" or "global"
 figsize = (12, 1.5)  # thin; using (12, 5) for tall
+peak_entry = None
+peak_exit = None
 
 plt.rcParams["font.family"] = "Helvetica"
 plt.rcParams["font.size"] = "12"
@@ -23,7 +26,7 @@ plt.rcParams["font.size"] = "12"
 def P(V):  # pressure in kPa from Vout in arb. units from 0 to 1023
     return (V - 40.92) / 3.77487
 
-def plot(roi, box = None, units="seconds", outfile="out.pdf"):
+def plot(roi, box = None, units="seconds", outfile="out.pdf", freq=False):
     begin, end = roi
     points = end - begin
     tmult = 1  # default units are seconds
@@ -36,7 +39,8 @@ def plot(roi, box = None, units="seconds", outfile="out.pdf"):
     infile = open(filename, "r")
     times = [0] * points
     channels = [[0]*points for _ in range(len(kept_channels))]
-
+    in_peak = False
+    peak_count = 0
     print(filename, "->", outfile)
     for i, line in enumerate(infile):
         if i == 0 and timing == "global":
@@ -60,20 +64,37 @@ def plot(roi, box = None, units="seconds", outfile="out.pdf"):
                     box_end_time = ((datetime.fromisoformat(tokens[0]) - start_time).total_seconds()) / tmult
             for j in range(8):
                 if j in kept_channels:
-                    channels[kept_channels.index(j)][i-begin] = P(float(tokens[j+1]))
+                    pressure = P(float(tokens[j+1]))
+                    channels[kept_channels.index(j)][i-begin] = pressure
+                    if freq:
+                        if in_peak:  # in peak, look for exit
+                            if pressure < peak_exit:  # exiting peak
+                                print("exiting peak")
+                                in_peak = False
+                        else:  # not in peak, look for entry
+                            if pressure > peak_entry:  # entering peak
+                                print("entering peak")
+                                in_peak = True
+                                peak_count += 1
 
+    if freq:
+        print("peak count =", peak_count)
+        print("elapsed seconds =", right-left)
+        print("frequency =", peak_count / (right-left), "Hz")
 
     plt.figure(figsize=figsize, dpi=1200)
     for i, name in enumerate(kept_channels):
         print("  plotting ", name)
         plt.plot(times, channels[i], label=name)
+        if freq:
+            plt.plot(times, numpy.full(len(times), peak_entry))
+            plt.plot(times, numpy.full(len(times), peak_exit))
 
     if box:
         print("  rectangle at", box_start_time, 0, box_end_time-box_start_time, 40)
         rect=mpatches.Rectangle((box_start_time, 0), box_end_time-box_start_time, 40,
                                 fill=False, color="black", linewidth=2, zorder=4, clip_on=False)
         plt.gca().add_patch(rect)
-
 
     plt.ylabel("Vac. (kPa)")
     if units == "seconds1":
