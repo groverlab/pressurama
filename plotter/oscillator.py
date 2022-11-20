@@ -1,7 +1,7 @@
 import plotter
 import sys
 
-plotter.filename = sys.argv[1]
+plotter.filename = "oscillator.csv"
 plotter.kept_channels = [7,1,3,6,2]
 plotter.timing = "local"
 
@@ -16,12 +16,12 @@ roi = ([0, lines],
        [int(0.7777*lines), int(0.7778*lines)],
        [int(0.77777*lines), int(0.77778*lines)])
 
-plotter.figsize = (8, 1.5)  # 12, 1.5
-plotter.plot(roi[0], box=roi[1], units="days", outfile="01.png")
-plotter.plot(roi[1], box=roi[2], units="hours", outfile="02.png")
-plotter.plot(roi[2], box=roi[3], units="minutes", outfile="03.png")
-plotter.plot(roi[3], box=roi[4], units="minutes", outfile="04.png")
-plotter.plot(roi[4], box=roi[5], units="seconds1", outfile="05.png")
+# plotter.figsize = (8, 1.5)  # 12, 1.5
+# plotter.plot(roi[0], box=roi[1], units="days", outfile="01.png")
+# plotter.plot(roi[1], box=roi[2], units="hours", outfile="02.png")
+# plotter.plot(roi[2], box=roi[3], units="minutes", outfile="03.png")
+# plotter.plot(roi[3], box=roi[4], units="minutes", outfile="04.png")
+# plotter.plot(roi[4], box=roi[5], units="seconds1", outfile="05.png")
 
 plotter.figsize = (8, 3)  # 12, 5
 plotter.plot(roi[5], units="seconds2", outfile="06.png")

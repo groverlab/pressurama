@@ -120,6 +120,8 @@ def plot(roi, box = None, units="seconds", outfile="out.pdf", freq=False):
     
     plt.xlim(left=left, right=right)
     plt.ylim(bottom=0, top=40)
+    if units == "seconds2":
+        plt.ylim(bottom=-5, top=45)  # a little more space for labels on bottom plot
     plt.tight_layout()
     # plt.legend()
     plt.savefig(outfile)
