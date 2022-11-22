@@ -17,6 +17,8 @@ peak_exit = None
 plt.rcParams["font.family"] = "Helvetica"
 plt.rcParams["font.size"] = "12"
 
+colors = ['tab:blue', 'tab:orange', 'tab:green', 'tab:red', 'tab:purple']
+
 #  From the datasheet:  https://www.nxp.com/docs/en/data-sheet/MPX4250D.pdf
 #  Vout = VCC × (P × 0.00369 + 0.04)
 #  P = pressure in kPa
@@ -26,7 +28,7 @@ plt.rcParams["font.size"] = "12"
 def P(V):  # pressure in kPa from Vout in arb. units from 0 to 1023
     return (V - 40.92) / 3.77487
 
-def plot(roi, box = None, units="seconds", outfile="out.pdf", freq=False):
+def plot(roi, box = None, units="seconds", outfile="out.pdf", freq=False, color=-1):
     begin, end = roi
     points = end - begin
     tmult = 1  # default units are seconds
@@ -91,7 +93,10 @@ def plot(roi, box = None, units="seconds", outfile="out.pdf", freq=False):
     plt.figure(figsize=figsize, dpi=1200)
     for i, name in enumerate(kept_channels):
         print("  plotting ", name)
-        plt.plot(times, channels[i], label=name)
+        if color >= 0:  # if a color number is specified, use it:
+            plt.plot(times, channels[i], label=name, color=colors[color])
+        else:  # otherwise just use the next default color:
+            plt.plot(times, channels[i], label=name)
         if freq:
             plt.plot(times, numpy.full(len(times), peak_entry))
             plt.plot(times, numpy.full(len(times), peak_exit))

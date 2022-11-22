@@ -15,20 +15,20 @@ plotter.timing = "local"
 
 lines = 33984
 
-roi = [5000, 7000]
+roi = [4000, 8000]
 
 plotter.figsize = (8, 1.5)  # 12, 1.5
 
 plotter.kept_channels = [7]
-plotter.plot(roi, units="seconds", outfile="pulse_data_ch2.png")
+plotter.plot(roi, units="seconds", outfile="pulse_data_ch2.png", color=0)
 plotter.kept_channels = [1]
-plotter.plot(roi, units="seconds", outfile="pulse_data_ch5.png")
+plotter.plot(roi, units="seconds", outfile="pulse_data_ch5.png", color=1)
 plotter.kept_channels = [3]
-plotter.plot(roi, units="seconds", outfile="pulse_data_ch3.png")
+plotter.plot(roi, units="seconds", outfile="pulse_data_ch3.png", color=2)
 plotter.kept_channels = [6]
-plotter.plot(roi, units="seconds", outfile="pulse_data_ch1.png")
+plotter.plot(roi, units="seconds", outfile="pulse_data_ch1.png", color=3)
 plotter.kept_channels = [2]
-plotter.plot(roi, units="seconds", outfile="pulse_data_ch4.png")
+plotter.plot(roi, units="seconds", outfile="pulse_data_ch4.png", color=4)
 
 
 # plotter.figsize = (8, 3)  # 12, 5
