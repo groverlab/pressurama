@@ -1,8 +1,7 @@
 import plotter
-import sys
 
 plotter.filename = "pulse_data.csv"
-plotter.kept_channels = [7,1,3,6,2]
+plotter.kept_channels = [7, 1, 3, 6, 2]
 plotter.timing = "local"
 
 # total lines in file:  33984
