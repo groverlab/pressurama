@@ -1,0 +1,14 @@
+pulse_data.csv -> pulse_data_freq_1.png
+freq analysis for roi 1450 to 5930
+peak count = 46
+elapsed seconds = 57.642801
+frequency = 0.7980181254550763 Hz
+period = 1.2531043695652173 s
+  plotting  2
+pulse_data.csv -> pulse_data_freq_2.png
+freq analysis for roi 6080 to 10530
+peak count = 60
+elapsed seconds = 57.249674
+frequency = 1.048040902381383 Hz
+period = 0.9541612333333334 s
+  plotting  2
