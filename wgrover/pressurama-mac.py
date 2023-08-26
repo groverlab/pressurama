@@ -4,7 +4,10 @@ port = ""
 usb_count = 0
 devices = os.listdir("/dev")
 for device in devices:
-    if "cu.usbmodem" in device:
+    # if "cu.usbserial" in device:  <-- original
+    # Recent versions of MacOS seem to use cu.usbmodem
+    # so this version will catch both:
+    if "cu.usb" in device:
         port = device
         usb_count += 1
 if usb_count == 0:
