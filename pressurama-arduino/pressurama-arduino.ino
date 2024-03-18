@@ -1,8 +1,16 @@
-void setup() {
-  Serial.begin(2000000);
-}
+const byte numChars = 32;
+char receivedChars[numChars];   // an array to store the received data
+boolean newData = false;
+int averages = 10;             // new for this version
+boolean programmed = false;
 
-int averages = 10;
+void setup() {
+  Serial.begin(115200);
+  while(!programmed) {
+      recvWithEndMarker();
+    showNewNumber();
+  }
+}
 
 void loop() {
   float sums[] = {0,0,0,0,0,0,0,0};
@@ -19,4 +27,42 @@ void loop() {
     Serial.print(" ");
   }
   Serial.print("Y\n");
+}
+
+
+
+void recvWithEndMarker() {
+    static byte ndx = 0;
+    char endMarker = '\n';
+    char rc;
+    
+    if (Serial.available() > 0) {
+        rc = Serial.read();
+
+        if (rc != endMarker) {
+            receivedChars[ndx] = rc;
+            ndx++;
+            if (ndx >= numChars) {
+                ndx = numChars - 1;
+            }
+        }
+        else {
+            receivedChars[ndx] = '\0'; // terminate the string
+            ndx = 0;
+            newData = true;
+        }
+    }
+}
+
+void showNewNumber() {
+    if (newData == true) {
+        averages = 0;             // new for this version
+        averages = atoi(receivedChars);   // new for this version
+        Serial.print("This just in ... ");
+        Serial.println(receivedChars);
+        Serial.print("Data as Number ... ");    // new for this version
+        Serial.println(averages);     // new for this version
+        newData = false;
+        programmed = true;
+    }
 }
