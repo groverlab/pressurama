@@ -17,10 +17,9 @@ for line in infile:
     for i in range(num_channels):
         channels[i].append(float(tokens[i+1]))
 
-exit()
-
 for i in range(num_channels):
     plt.plot(times, channels[i], label=i)
 plt.legend()
-plt.savefig("out.png")
+# plt.savefig("out.png")
+plt.show()
 
