@@ -6,10 +6,10 @@ boolean programmed = false;
 
 void setup() {
   Serial.begin(115200);
-  while (!programmed) {
-    recvWithEndMarker();
-    showNewNumber();
-  }
+  // while (!programmed) {
+  //   recvWithEndMarker();
+  //   showNewNumber();
+  // }
 }
 
 void loop() {

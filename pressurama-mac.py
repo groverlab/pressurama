@@ -15,8 +15,9 @@ if usb_count == 0:
 if usb_count > 1:
     sys.exit("Multiple ports found")
 port = "/dev/" + port
+print(port)
 data = []
-ser = serial.Serial(port, 2000000)
+ser = serial.Serial(port, 115200, timeout=1)
 ser.flush()
 while True:
     s = ser.readline().decode("utf-8")
