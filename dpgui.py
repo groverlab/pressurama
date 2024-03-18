@@ -24,29 +24,30 @@ global meas
 freqs = collections.deque(maxlen=history)
 meas = collections.deque(maxlen=history)
 
+# global sample, file_ready
+port = ""
+usb_count = 0
+devices = os.listdir("/dev")
+for device in devices:
+    # if "cu.usbserial" in device:  <-- original
+    # Recent versions of MacOS seem to use cu.usbmodem
+    # so this version will catch both:
+    if "cu.usb" in device:
+        port = device
+        usb_count += 1
+if usb_count == 0:
+    sys.exit("No port found")
+if usb_count > 1:
+    sys.exit("Multiple ports found")
+port = "/dev/" + port
+print(port)
+data = []
+ser = serial.Serial(port, 115200, timeout=1)
+ser.flush()
+ser.readline()  # discard first measurement
+
 def update_data():
-    global sample, file_ready
-    port = ""
-    usb_count = 0
-    devices = os.listdir("/dev")
-    for device in devices:
-        # if "cu.usbserial" in device:  <-- original
-        # Recent versions of MacOS seem to use cu.usbmodem
-        # so this version will catch both:
-        if "cu.usb" in device:
-            port = device
-            usb_count += 1
-    if usb_count == 0:
-        sys.exit("No port found")
-    if usb_count > 1:
-        sys.exit("Multiple ports found")
-    port = "/dev/" + port
-    print(port)
-    data = []
-    ser = serial.Serial(port, 115200, timeout=1)
-    ser.flush()
-    
-    ser.readline()  # discard first measurement
+
 
     sample = 1
     while not pause:
@@ -86,7 +87,10 @@ def update_data():
             dpg.set_value('freq_plot', [list(meas), list(freqs)])          
             dpg.fit_axis_data('freq_plot_x_axis')
             dpg.fit_axis_data('freq_plot_y_axis')
-            time.sleep(0.01)
+            dpg.set_value('freq_plot2', [list(meas), list(freqs)])   
+            dpg.fit_axis_data('freq_plot_x_axis2')
+            dpg.fit_axis_data('freq_plot_y_axis2')
+            # time.sleep(0.01)
             sample=sample+1
 
 dpg.create_context()
@@ -127,11 +131,15 @@ def input_callback(sender, app_data, user_data):
         meas = collections.deque(meas, maxlen=new_history)
     history = new_history
 
-with dpg.window(label='Raw data', tag='win',width=800, height=700):
-    with dpg.plot(height=250, width=-1):
+with dpg.window(label='Raw data', tag='win',width=800, height=1200):
+    with dpg.plot(height=100, width=-1):
         x_axis = dpg.add_plot_axis(dpg.mvXAxis, tag='freq_plot_x_axis', no_gridlines=True, no_tick_labels=True, no_tick_marks=True)
-        y_axis = dpg.add_plot_axis(dpg.mvYAxis, label='Resonance frequency [Hz]', tag='freq_plot_y_axis')
+        y_axis = dpg.add_plot_axis(dpg.mvYAxis, label='Channel 0', tag='freq_plot_y_axis')
         dpg.add_scatter_series(x=list(meas),y=list(freqs), label='Temp', parent='freq_plot_y_axis', tag='freq_plot')
+    with dpg.plot(height=100, width=-1):
+        x_axis2 = dpg.add_plot_axis(dpg.mvXAxis, tag='freq_plot_x_axis2', no_gridlines=True, no_tick_labels=True, no_tick_marks=True)
+        y_axis2 = dpg.add_plot_axis(dpg.mvYAxis, label='Channel 0', tag='freq_plot_y_axis2')
+        dpg.add_scatter_series(x=list(meas),y=list(freqs), label='Temp', parent='freq_plot_y_axis2', tag='freq_plot2')
     dpg.add_input_int(label="History", callback=input_callback, default_value=history, width=100)
     dpg.add_button(label="Clear", callback=button_callback, user_data="CLEAR", width=100)
     dpg.add_checkbox(label="Save data", callback=button_callback, user_data="SAVE DATA")
