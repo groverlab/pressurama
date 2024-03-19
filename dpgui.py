@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
 
-from hashlib import new
 import dearpygui.dearpygui as dpg
 import sys
 import time
