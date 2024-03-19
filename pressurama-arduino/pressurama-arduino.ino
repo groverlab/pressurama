@@ -1,11 +1,11 @@
 const byte numChars = 32;
 char receivedChars[numChars];  // an array to store the received data
 boolean newData = false;
-long averages = 10;  // new for this version
+long averages = 5;  // <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 boolean programmed = false;
 
 void setup() {
-  Serial.begin(115200);
+  Serial.begin(2000000);
   // while (!programmed) {
   //   recvWithEndMarker();
   //   showNewNumber();
