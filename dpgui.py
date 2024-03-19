@@ -6,15 +6,13 @@ import sys
 import time
 import threading
 import serial
-import os
-import numpy
+from serial.tools.list_ports import comports
 import collections
 import datetime
 from itertools import islice
-import random
+import platform
 
 history = 200
-stdev_window = 30
 pause = False
 save_data = False
 file_ready = False
@@ -29,23 +27,44 @@ ch6 = collections.deque(maxlen=history)
 ch7 = collections.deque(maxlen=history)
 meas = collections.deque(maxlen=history)
 
-# global sample, file_ready
+# port = ""
+# usb_count = 0
+# devices = os.listdir("/dev")
+# for device in devices:
+#     # if "cu.usbserial" in device:  <-- original
+#     # Recent versions of MacOS seem to use cu.usbmodem
+#     # so this version will catch both:
+#     if "cu.usb" in device:
+#         port = device
+#         usb_count += 1
+# if usb_count == 0:
+#     sys.exit("No port found")
+# if usb_count > 1:
+#     sys.exit("Multiple ports found")
+# port = "/dev/" + port
+# print(port)
+
+
+ports = 0
 port = ""
-usb_count = 0
-devices = os.listdir("/dev")
-for device in devices:
-    # if "cu.usbserial" in device:  <-- original
-    # Recent versions of MacOS seem to use cu.usbmodem
-    # so this version will catch both:
-    if "cu.usb" in device:
-        port = device
-        usb_count += 1
-if usb_count == 0:
-    sys.exit("No port found")
-if usb_count > 1:
-    sys.exit("Multiple ports found")
-port = "/dev/" + port
-print(port)
+for p in comports():
+    if "USB" in str(p):
+        port = p.name
+        ports += 1
+
+if ports == 0:
+    sys.exit("❌ No port found - is the Pressurama plugged in?")
+
+if ports >= 2:
+    sys.exit("❌ Too many ports found - unplug everything but the Pressurama and try again")
+
+if platform.system() == "Darwin":  # if MacOS...
+    port = "/dev/" + port   # ...prepend /dev/
+
+print("✅ Found a Pressurama at " + port)
+
+
+
 data = []
 ser = serial.Serial(port, 2000000, timeout=1)
 ser.flush()
