@@ -1,5 +1,7 @@
 # Pressurama multi-channel pressure logger
 
+![alt text](pressurama.jpeg)
+
 Using default Python installation from python.org
 
 Program your Arduino using the file
