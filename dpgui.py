@@ -65,12 +65,14 @@ print("✅ Found a Pressurama at " + port)
 
 
 
-data = []
+
+
 ser = serial.Serial(port, 2000000, timeout=1)
 ser.flush()
 ser.readline()  # discard first measurement
 
 def update_data():
+    global file_ready
     sample = 1
     while not pause:
         # message = ser.readline().decode("utf-8")
@@ -124,7 +126,16 @@ def update_data():
         meas.append(sample)
         if save_data:
             if file_ready:
-                outfile.write(datetime.datetime.now().isoformat() + "," + str(meas0) + "\n")  # FIXME
+                outfile.write(datetime.datetime.now().isoformat() + ",")
+                outfile.write("," + str(meas0))
+                outfile.write("," + str(meas1))
+                outfile.write("," + str(meas2))
+                outfile.write("," + str(meas3))
+                outfile.write("," + str(meas4))
+                outfile.write("," + str(meas5))
+                outfile.write("," + str(meas6))
+                outfile.write("," + str(meas7))
+                outfile.write("\n")
             else:
                 outfile = open(datetime.datetime.now().strftime("%Y-%m-%d_%H-%M-%S.csv"), "w")
                 file_ready = True
