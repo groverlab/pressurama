@@ -19,9 +19,14 @@ pause = False
 save_data = False
 file_ready = False
 
-global freqs
-global meas
-freqs = collections.deque(maxlen=history)
+ch0 = collections.deque(maxlen=history)
+ch1 = collections.deque(maxlen=history)
+ch2 = collections.deque(maxlen=history)
+ch3 = collections.deque(maxlen=history)
+ch4 = collections.deque(maxlen=history)
+ch5 = collections.deque(maxlen=history)
+ch6 = collections.deque(maxlen=history)
+ch7 = collections.deque(maxlen=history)
 meas = collections.deque(maxlen=history)
 
 # global sample, file_ready
@@ -67,42 +72,63 @@ def update_data():
                     channel = int(token.split(":")[0])
                     measurement = float(token.split(":")[1])
                     if channel == 0:
-                        freq = measurement
+                        meas0 = measurement
+                    if channel == 1:
+                        meas1 = measurement
+                    if channel == 2:
+                        meas2 = measurement
+                    if channel == 3:
+                        meas3 = measurement
+                    if channel == 4:
+                        meas4 = measurement
+                    if channel == 5:
+                        meas5 = measurement
+                    if channel == 6:
+                        meas6 = measurement
+                    if channel == 7:
+                        meas7 = measurement
                     # print("%0.1f\t" % (measurement), end="")
                     # outfile.write("," + str(measurement))
             # print()
             # outfile.write("\n")
 
 
-        console_output = freq
+        console_output = meas0
         if console_output != "":
-            freqs.append(freq)
+            ch0.append(meas0)
+            ch1.append(meas1)
+            ch2.append(meas2)
+            ch3.append(meas3)
+            ch4.append(meas4)
+            ch5.append(meas5)
+            ch6.append(meas6)
+            ch7.append(meas7)
             meas.append(sample)
             if save_data:
                 if file_ready:
-                    outfile.write(datetime.datetime.now().isoformat() + "," + str(freq) + "\n")
+                    outfile.write(datetime.datetime.now().isoformat() + "," + str(meas0) + "\n")  # FIXME
                 else:
                     outfile = open(datetime.datetime.now().strftime("%Y-%m-%d_%H-%M-%S.csv"), "w")
                     file_ready = True
-            dpg.set_value('freq_plot', [list(meas), list(freqs)])          
-            dpg.fit_axis_data('freq_plot_x_axis')
-            dpg.fit_axis_data('freq_plot_y_axis')
-            dpg.set_value('freq_plot2', [list(meas), list(freqs)])   
-            dpg.fit_axis_data('freq_plot_x_axis2')
-            dpg.fit_axis_data('freq_plot_y_axis2')
+            dpg.set_value('freq_plot0', [list(meas), list(ch0)])          
+            dpg.fit_axis_data('freq_plot_x_axis0')
+            dpg.fit_axis_data('freq_plot_y_axis0')
+            dpg.set_value('freq_plot1', [list(meas), list(ch1)])   
+            dpg.fit_axis_data('freq_plot_x_axis1')
+            dpg.fit_axis_data('freq_plot_y_axis1')
             # time.sleep(0.01)
             sample=sample+1
 
 dpg.create_context()
 
 def button_callback(sender, app_data, user_data):
-    global pause, meas, freqs, sample, save_data, file_ready
+    global pause, meas, ch0, sample, save_data, file_ready
     print(f"sender is: {sender}")
     print(f"app_data is: {app_data}")
     print(f"user_data is: {user_data}")
     if "CLEAR" in user_data:
         meas.clear()
-        freqs.clear()
+        ch0.clear()
         sample = 1
     if "GTFO" in user_data:
         print("PAUSING")
@@ -118,28 +144,28 @@ def button_callback(sender, app_data, user_data):
             file_ready = False
 
 def input_callback(sender, app_data, user_data):
-    global history, freqs, meas, s, sa
+    global history, ch0, meas
     print(f"sender is: {sender}")
     print(f"app_data is: {app_data}")
     print(f"user_data is: {user_data}")
     new_history = app_data
     if new_history < history:  # if history is getting smaller
-        freqs = collections.deque(islice(freqs, 0, new_history), maxlen=new_history)
+        ch0 = collections.deque(islice(ch0, 0, new_history), maxlen=new_history)
         meas = collections.deque(islice(meas, 0, new_history), maxlen=new_history)
     elif new_history > history:  # if history is getting larger
-        freqs = collections.deque(freqs, maxlen=new_history)
+        ch0 = collections.deque(ch0, maxlen=new_history)
         meas = collections.deque(meas, maxlen=new_history)
     history = new_history
 
 with dpg.window(label='Raw data', tag='win',width=800, height=1200):
     with dpg.plot(height=100, width=-1):
-        x_axis = dpg.add_plot_axis(dpg.mvXAxis, tag='freq_plot_x_axis', no_gridlines=True, no_tick_labels=True, no_tick_marks=True)
-        y_axis = dpg.add_plot_axis(dpg.mvYAxis, label='Channel 0', tag='freq_plot_y_axis')
-        dpg.add_scatter_series(x=list(meas),y=list(freqs), label='Temp', parent='freq_plot_y_axis', tag='freq_plot')
+        x_axis0 = dpg.add_plot_axis(dpg.mvXAxis, tag='freq_plot_x_axis0', no_gridlines=True, no_tick_labels=True, no_tick_marks=True)
+        y_axis0 = dpg.add_plot_axis(dpg.mvYAxis, label='Channel 0', tag='freq_plot_y_axis0')
+        dpg.add_scatter_series(x=list(meas),y=list(ch0), label='Temp', parent='freq_plot_y_axis0', tag='freq_plot0')
     with dpg.plot(height=100, width=-1):
-        x_axis2 = dpg.add_plot_axis(dpg.mvXAxis, tag='freq_plot_x_axis2', no_gridlines=True, no_tick_labels=True, no_tick_marks=True)
-        y_axis2 = dpg.add_plot_axis(dpg.mvYAxis, label='Channel 0', tag='freq_plot_y_axis2')
-        dpg.add_scatter_series(x=list(meas),y=list(freqs), label='Temp', parent='freq_plot_y_axis2', tag='freq_plot2')
+        x_axis1 = dpg.add_plot_axis(dpg.mvXAxis, tag='freq_plot_x_axis1', no_gridlines=True, no_tick_labels=True, no_tick_marks=True)
+        y_axis1 = dpg.add_plot_axis(dpg.mvYAxis, label='Channel 0', tag='freq_plot_y_axis1')
+        dpg.add_scatter_series(x=list(meas),y=list(ch0), label='Temp', parent='freq_plot_y_axis1', tag='freq_plot1')
     dpg.add_input_int(label="History", callback=input_callback, default_value=history, width=100)
     dpg.add_button(label="Clear", callback=button_callback, user_data="CLEAR", width=100)
     dpg.add_checkbox(label="Save data", callback=button_callback, user_data="SAVE DATA")
