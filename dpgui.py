@@ -116,6 +116,24 @@ def update_data():
             dpg.set_value('freq_plot1', [list(meas), list(ch1)])   
             dpg.fit_axis_data('freq_plot_x_axis1')
             dpg.fit_axis_data('freq_plot_y_axis1')
+            dpg.set_value('freq_plot2', [list(meas), list(ch2)])   
+            dpg.fit_axis_data('freq_plot_x_axis2')
+            dpg.fit_axis_data('freq_plot_y_axis2')
+            dpg.set_value('freq_plot3', [list(meas), list(ch3)])   
+            dpg.fit_axis_data('freq_plot_x_axis3')
+            dpg.fit_axis_data('freq_plot_y_axis3')
+            dpg.set_value('freq_plot4', [list(meas), list(ch4)])   
+            dpg.fit_axis_data('freq_plot_x_axis4')
+            dpg.fit_axis_data('freq_plot_y_axis4')
+            dpg.set_value('freq_plot5', [list(meas), list(ch5)])   
+            dpg.fit_axis_data('freq_plot_x_axis5')
+            dpg.fit_axis_data('freq_plot_y_axis5')
+            dpg.set_value('freq_plot6', [list(meas), list(ch6)])   
+            dpg.fit_axis_data('freq_plot_x_axis6')
+            dpg.fit_axis_data('freq_plot_y_axis6')
+            dpg.set_value('freq_plot7', [list(meas), list(ch7)])   
+            dpg.fit_axis_data('freq_plot_x_axis7')
+            dpg.fit_axis_data('freq_plot_y_axis7')
             # time.sleep(0.01)
             sample=sample+1
 
@@ -157,15 +175,39 @@ def input_callback(sender, app_data, user_data):
         meas = collections.deque(meas, maxlen=new_history)
     history = new_history
 
-with dpg.window(label='Raw data', tag='win',width=800, height=1200):
+with dpg.window(label='Raw data', tag='win',width=800, height=1000):
     with dpg.plot(height=100, width=-1):
         x_axis0 = dpg.add_plot_axis(dpg.mvXAxis, tag='freq_plot_x_axis0', no_gridlines=True, no_tick_labels=True, no_tick_marks=True)
         y_axis0 = dpg.add_plot_axis(dpg.mvYAxis, label='Channel 0', tag='freq_plot_y_axis0')
         dpg.add_scatter_series(x=list(meas),y=list(ch0), label='Temp', parent='freq_plot_y_axis0', tag='freq_plot0')
     with dpg.plot(height=100, width=-1):
         x_axis1 = dpg.add_plot_axis(dpg.mvXAxis, tag='freq_plot_x_axis1', no_gridlines=True, no_tick_labels=True, no_tick_marks=True)
-        y_axis1 = dpg.add_plot_axis(dpg.mvYAxis, label='Channel 0', tag='freq_plot_y_axis1')
-        dpg.add_scatter_series(x=list(meas),y=list(ch0), label='Temp', parent='freq_plot_y_axis1', tag='freq_plot1')
+        y_axis1 = dpg.add_plot_axis(dpg.mvYAxis, label='Channel 1', tag='freq_plot_y_axis1')
+        dpg.add_scatter_series(x=list(meas),y=list(ch1), label='Temp', parent='freq_plot_y_axis1', tag='freq_plot1')
+    with dpg.plot(height=100, width=-1):
+        x_axis2 = dpg.add_plot_axis(dpg.mvXAxis, tag='freq_plot_x_axis2', no_gridlines=True, no_tick_labels=True, no_tick_marks=True)
+        y_axis2 = dpg.add_plot_axis(dpg.mvYAxis, label='Channel 2', tag='freq_plot_y_axis2')
+        dpg.add_scatter_series(x=list(meas),y=list(ch2), label='Temp', parent='freq_plot_y_axis2', tag='freq_plot2')
+    with dpg.plot(height=100, width=-1):
+        x_axis3 = dpg.add_plot_axis(dpg.mvXAxis, tag='freq_plot_x_axis3', no_gridlines=True, no_tick_labels=True, no_tick_marks=True)
+        y_axis3 = dpg.add_plot_axis(dpg.mvYAxis, label='Channel 3', tag='freq_plot_y_axis3')
+        dpg.add_scatter_series(x=list(meas),y=list(ch3), label='Temp', parent='freq_plot_y_axis3', tag='freq_plot3')
+    with dpg.plot(height=100, width=-1):
+        x_axis4 = dpg.add_plot_axis(dpg.mvXAxis, tag='freq_plot_x_axis4', no_gridlines=True, no_tick_labels=True, no_tick_marks=True)
+        y_axis4 = dpg.add_plot_axis(dpg.mvYAxis, label='Channel 4', tag='freq_plot_y_axis4')
+        dpg.add_scatter_series(x=list(meas),y=list(ch4), label='Temp', parent='freq_plot_y_axis4', tag='freq_plot4')
+    with dpg.plot(height=100, width=-1):
+        x_axis5 = dpg.add_plot_axis(dpg.mvXAxis, tag='freq_plot_x_axis5', no_gridlines=True, no_tick_labels=True, no_tick_marks=True)
+        y_axis5 = dpg.add_plot_axis(dpg.mvYAxis, label='Channel 5', tag='freq_plot_y_axis5')
+        dpg.add_scatter_series(x=list(meas),y=list(ch5), label='Temp', parent='freq_plot_y_axis5', tag='freq_plot5')
+    with dpg.plot(height=100, width=-1):
+        x_axis6 = dpg.add_plot_axis(dpg.mvXAxis, tag='freq_plot_x_axis6', no_gridlines=True, no_tick_labels=True, no_tick_marks=True)
+        y_axis6 = dpg.add_plot_axis(dpg.mvYAxis, label='Channel 6', tag='freq_plot_y_axis6')
+        dpg.add_scatter_series(x=list(meas),y=list(ch6), label='Temp', parent='freq_plot_y_axis6', tag='freq_plot6')
+    with dpg.plot(height=100, width=-1):
+        x_axis7 = dpg.add_plot_axis(dpg.mvXAxis, tag='freq_plot_x_axis7', no_gridlines=True, no_tick_labels=True, no_tick_marks=True)
+        y_axis7 = dpg.add_plot_axis(dpg.mvYAxis, label='Channel 7', tag='freq_plot_y_axis7')
+        dpg.add_scatter_series(x=list(meas),y=list(ch7), label='Temp', parent='freq_plot_y_axis7', tag='freq_plot7')
     dpg.add_input_int(label="History", callback=input_callback, default_value=history, width=100)
     dpg.add_button(label="Clear", callback=button_callback, user_data="CLEAR", width=100)
     dpg.add_checkbox(label="Save data", callback=button_callback, user_data="SAVE DATA")
